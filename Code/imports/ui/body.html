@@ -1,0 +1,27 @@
+<body>
+  <div class="container">
+    <header>
+        <h1>My List ({{incompleteCount}})</h1>
+    </header>
+    <label class="hide-completed">
+      <input type="checkbox" />
+      Hide Completed Entries
+    </label>
+
+    {{> loginButtons}}
+
+    {{#if currentUser}}
+      <form class="new-entry">
+        <input type="text" name="text" placeholder="Type to add new entry" />
+      </form>
+    {{/if}}
+
+    <!-- iterate through entriess, display each
+          entry based on template below. -->
+    <ul>
+      {{#each entries}}
+        {{> entry}}
+      {{/each}}
+    </ul>
+  </div>
+</body>
