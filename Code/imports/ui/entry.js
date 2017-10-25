@@ -16,8 +16,5 @@ Template.entry.events({
   'click .delete'() {
     // remove entry
     Meteor.call('entries.remove', this._id);
-  },
-  'click .toggle-private'() {
-    Meteor.call('entries.setPrivate', this._id, !this.private);
   }
 });

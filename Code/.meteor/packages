@@ -17,6 +17,15 @@ es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.8.3              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.2.4            # Server-side component of the `meteor shell` command
 
-reactive-dict@1.1.9
+reactive-dict
 accounts-ui@1.1.9
 accounts-password@1.4.0
+jagi:astronomy
+accounts-facebook
+accounts-google
+accounts-twitter
+accounts-github
+twitter-config-ui
+facebook-config-ui
+google-config-ui
+github-config-ui

@@ -1,2 +1,4 @@
 .meteor/local
-./DS_Store
+.DS_Store
+Code/.DS_store
+Cod3/imports/.DS_store
