@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
-import { Entries } from '../api/entries.js';
+import { Entries } from '../../collections/entries.js';
 import './entry.html';
 
 Template.entry.helpers({

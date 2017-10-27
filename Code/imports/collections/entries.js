@@ -1,22 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Entry } from '../classes/Entry.js';
+import { EntryType } from '../classes/EntryType.js'
 
-export const Entries = new Mongo.Collection('entries');
+const Entries = new Mongo.Collection('entries');
 
-if (Meteor.isServer) {
+
+// Try moving below to component
+/* (Meteor.isServer) {
   // Only runs on server
   Meteor.publish('entries', function entriesPublication() {
       return Entries.find({
         $or: [
-          { private: { $ne: true } },
-          { owner: this.userId },
+          //{ private: { $ne: true } },
+          { user: this.userId },
         ],
       });
   });
-}
+}*/
 
 Meteor.methods({
+  //TODO: Add entry input for entry type, plus new methods for new entry subtypes linked to each entry
   'entries.insert'(text) {
     check(text, String);
 
@@ -26,10 +31,10 @@ Meteor.methods({
     }
 
     Entries.insert({
-      name: text,
-      createdAt: new Date(),
-      owner: Meteor.userId(),
-      username: Meteor.user().username,
+      title: text,
+      //entryType: EntryType.NOTE,
+      //createdAt: new Date(),
+      userId: Meteor.userId(),
     });
   },
   'entries.remove'(entryId) {
@@ -54,18 +59,7 @@ Meteor.methods({
     }
 
     Entries.update(entryId, { $set: {checked: setChecked} });
-  },
-  'entries.setPrivate'(entryId, setToPrivate) {
-    check(entryId, String);
-    check(setToPrivate, Boolean);
-
-    const entry = Entries.findOne(entryId);
-
-    // Ensure only owner can make entry private
-    if (entry.owner !== Meteor.userId()) {
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Tasks.update(entryId, { $set: { private: setToPrivate} });
-  },
+  }
 });
+
+export default Entries;

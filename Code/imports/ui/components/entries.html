@@ -1,20 +1,18 @@
-<body>
-  <div class="container">
+<template name="entries">
+  <div class="entries_display">
     <header>
-        <h1>My List ({{incompleteCount}})</h1>
+        <h1>My List</h1>
     </header>
     <label class="hide-completed">
       <input type="checkbox" />
       Hide Completed Entries
     </label>
 
-    {{> loginButtons}}
+    <!--TODO: Edit new entry form to allow for data from all entry types -->
+    <form class="new-entry">
+      <input type="text" name="text" placeholder="Type to add new entry" />
+    </form>
 
-    {{#if currentUser}}
-      <form class="new-entry">
-        <input type="text" name="text" placeholder="Type to add new entry" />
-      </form>
-    {{/if}}
 
     <!-- iterate through entriess, display each
           entry based on template below. -->
@@ -24,4 +22,4 @@
       {{/each}}
     </ul>
   </div>
-</body>
+</template>

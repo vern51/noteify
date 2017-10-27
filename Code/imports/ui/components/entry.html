@@ -1,5 +1,5 @@
 <template name="entry">
-  <li class="{{#if checked}}checked{{/if}} {{#if private}} private {{/if }}">
+  <li class="{{#if checked}}checked{{/if}}">
     <button class="delete">&times;</button>
 
     <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
@@ -13,6 +13,8 @@
       {{/if}}
     </button>-->
 
-    <span class="name">{{name}}</span>
+    <span class="title">{{entry.title}}</span>
+    <!--TODO: Add entry type specific data-->
+
   </li>
 </template>

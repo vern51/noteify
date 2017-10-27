@@ -6,14 +6,14 @@ const Users = Meteor.users;
 
 if (Meteor.isServer) {
   // Only runs publish on server
-  Meteor.publish('users', function usersPublication() {
+  /*Meteor.publish('users', function usersPublication() {
       return Users.find({
         $or: [
-          { private: { $ne: true } },
+          //{ private: { $ne: true } },
           { owner: this.userId },
         ],
       });
-  });
+  });*/
 }
 
 Meteor.methods({

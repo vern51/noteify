@@ -1,20 +1,35 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { Entries } from '../api/entries.js';
-import './body.html';
+import Entries from '../../collections/entries.js';
 import './entry.js';
+import './entries.html'
+
+if (Meteor.isServer) {
+  // Only runs on server
+  /*if (Template.instance().subscriptionsReady()) {
+    Meteor.publish('entries', function entriesPublication() {
+        return Entries.find({
+          $or: [
+            //{ private: { $ne: true } },
+            { user: this.userId },
+          ],
+        });
+    });
+  }*/
+}
 
 // Method to set up the body
 // Like a constructor in OOP
-Template.body.onCreated(function bodyOnCreated() {
+Template.entries.onCreated(function bodyOnCreated() {
+  console.log("creating entries template...");
   this.state = new ReactiveDict();
-  Meteor.subscribe('entries');
+  //Meteor.subscribe('entries');
 });
 
 // This is a place to store helper methods for the body of the site
 // Similar to abstract helper methods for an OOP class
-Template.body.helpers({
+Template.entries.helpers({
   entries() {
     const instance = Template.instance();
     if (instance.state.get('hideCompleted')) {
@@ -30,7 +45,7 @@ Template.body.helpers({
 });
 
 // This is a place for logic to properly handle user interaction
-Template.body.events({
+Template.entries.events({
   // create new entry from form event data
   'submit .new-entry'(event) {
     // prevent default browser form submit
