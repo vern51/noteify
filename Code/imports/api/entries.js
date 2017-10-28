@@ -33,28 +33,28 @@ Meteor.methods({
       username: Meteor.users.findOne(this.userId).username,
     });
   },
-  'entries.remove'(entryId) {
+  'entries.remove': function(entryId) {
     check(entryId, String);
 
     const entry = Entries.findOne(entryId);
-    if (entries.owner !== this.userId) {
+    if (entry.owner !== this.userId) {
       // Ensure only the owner can delete it
       throw new Meteor.Error('not-authorized');
     }
 
     Entries.remove(entryId);
   },
-  'entries.setChecked'(entryId, setChecked) {
+  'entries.setChecked': function(entryId, setChecked) {
     check(entryId, String);
     check(setChecked, Boolean);
 
     const entry = Entries.findOne(entryId);
     if (entry.owner !== this.userId) {
-      // If the entry is private, make sure only the owner can check it off
+      // Enure only the owner can check it off
       throw new Meteor.Error('not-authorized');
     }
 
-    Entrie.update(entryId, { $set: { checked: setChecked } });
+    Entries.update(entryId, { $set: { checked: setChecked } });
   }
 });
 

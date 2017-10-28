@@ -5,9 +5,10 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
 
-import Entries from '../../api/entries.js';
-
+import { Entries } from '../../api/entries.js';
 import './entries.html';
+import './entry.html';
+import './entry.js';
 
 
 /*if (Meteor.isServer) {
@@ -22,7 +23,7 @@ import './entries.html';
   });
 }*/
 
-Template.entries.onCreated(function bodyOnCreated() {
+Template.entries.onCreated(function entriesOnCreated() {
   this.state = new ReactiveDict();
   Meteor.subscribe('entries');
 });
