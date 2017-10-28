@@ -1,45 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import '../../startup/routes.js';
+import { ReactiveDict } from 'meteor/reactive-dict';
+
+import { Entries } from '../components/entries.js';
+//import { Entries } from '../../client/components/entries.js';
+
+import '../components/entry.js';
+//import '../../client/components/entry.js';
+
+import '../components/entries.js';
+//import '../../client/components/entries.js';
+
 import '../components/entries.html';
-//import '../../collections/entries.js'
-import Entries from '../../collections/entries.js';
-import Users from '../../collections/users.js';
+//import '../../client/components/entries.html';
 
 import './body.html';
 
-
-
-
-// Method to set up the body
-// Like a constructor in OOP
 Template.body.onCreated(function bodyOnCreated() {
-  console.log("body template created");
-  //Meteor.subscribe('users');
-  //if (Meteor.userId() > 0) {
-//console.log("showing entries...");
-    //FlowRouter.go('Entries.show');
-  //}
-  //body.display();
-});
-
-// This is a place to store helper methods for the body of the site
-// Similar to abstract helper methods for an OOP class
-Template.Body.helpers({
-  currentUser() {
-    console.log("Userid: ", this.userId());
-    return this.userId() === Meteor.userId();
-  },
-  'display': function() {
-    console.log("display");
-    //if (Meteor.userid()) {
-      //console.log("user logged in, displaying entries...");
-      FlowRouter.go('Entries.show');
-    //}
-  },
-});
-
-// This is a place for logic to properly handle user interaction
-Template.Body.events({
-
+  this.state = new ReactiveDict();
+  Meteor.subscribe('entries');
 });

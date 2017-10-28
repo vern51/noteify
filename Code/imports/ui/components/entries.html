@@ -1,25 +1,23 @@
 <template name="entries">
-  <div class="entries_display">
-    <header>
-        <h1>My List</h1>
-    </header>
-    <label class="hide-completed">
-      <input type="checkbox" />
-      Hide Completed Entries
-    </label>
+  <header>
+    <h1>My Entries</h1>
+  </header>
+  
+  <label class="hide-completed">
+    <input type="checkbox" />
+    Hide Completed Entries
+  </label>
 
-    <!--TODO: Edit new entry form to allow for data from all entry types -->
+
+  {{#if currentUser}}
     <form class="new-entry">
-      <input type="text" name="text" placeholder="Type to add new entry" />
+      <input type="text" name="text" placeholder="Type to add new entries" />
     </form>
+  {{/if}}
 
-
-    <!-- iterate through entriess, display each
-          entry based on template below. -->
-    <ul>
-      {{#each entries}}
-        {{> entry}}
-      {{/each}}
-    </ul>
-  </div>
+  <ul>
+    {{#each entries}}
+      {{> entry}}
+    {{/each}}
+  </ul>
 </template>

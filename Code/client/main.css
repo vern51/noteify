@@ -1,4 +1,4 @@
-/* All CSS declarations go here */
+/* CSS declarations go here */
 body {
   font-family: sans-serif;
   background-color: #315481;
@@ -85,7 +85,7 @@ li {
   border-bottom: #eee solid 1px;
 }
 
-li .name {
+li .text {
   margin-left: 10px;
 }
 
@@ -93,7 +93,7 @@ li.checked {
   color: #888;
 }
 
-li.checked .name {
+li.checked .text {
   text-decoration: line-through;
 }
 

@@ -1,11 +1,8 @@
 <template name="Body">
-  <div class="container">
-    {{> loginButtons}}
-    <!--{{#if currentUser}}
-      {{display}}
-    {{/if}}
-    {{> Template.dynamic template=main}}-->
-
-    {{> entries}}
-  </div>
+  <body>
+      <div class="container">
+          {{> loginButtons}}
+          {{> Template.dynamic template=main}}
+      </div>
+  </body>
 </template>
