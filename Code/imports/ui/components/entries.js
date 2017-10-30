@@ -6,10 +6,12 @@ import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
 
 import { Entries } from '../../api/entries.js';
+
 import './entries.html';
 import './entry.html';
 import './entry.js';
-
+import './forms/new_entry.html';
+import './forms/new_entry.js';
 
 /*if (Meteor.isServer) {
   // Only runs on the server
@@ -53,9 +55,10 @@ Template.entries.events({
     // Get value from element
     const target = event.target;
     const title = target.text.value;
+    //const entryType = target.entryType.value;
     check(title, String);
     // Insert an intry into Collection
-    Meteor.call('entries.insert', title);
+    Meteor.call('entries.insert', title, entryType);
 
     // clear form
     target.text.value = '';

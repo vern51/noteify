@@ -2,7 +2,7 @@
   <header>
     <h1>My Entries</h1>
   </header>
-  
+
   <label class="hide-completed">
     <input type="checkbox" />
     Hide Completed Entries
@@ -10,9 +10,7 @@
 
 
   {{#if currentUser}}
-    <form class="new-entry">
-      <input type="text" name="text" placeholder="Type to add new entries" />
-    </form>
+    {{> new_entry}}
   {{/if}}
 
   <ul>

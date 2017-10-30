@@ -2,7 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 
-import { Entries } from '../components/entries.js';
+import { Entries } from '../../api/entries.js';
+
+import '../components/entries.js';
 //import { Entries } from '../../client/components/entries.js';
 
 import '../components/entry.js';

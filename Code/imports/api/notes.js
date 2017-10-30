@@ -5,9 +5,9 @@ import { check } from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 
-export const Entries = new Mongo.Collection('entries');
+import Entries from './entries.js';
 
-Entries.attachSchema(new SimpleSchema({
+Notes.attachSchema((new SimpleSchema([Entries, {
   title: {
     type: String,
     label: "Title",
@@ -17,15 +17,6 @@ Entries.attachSchema(new SimpleSchema({
     type: String,
     allowedValues: ['note', 'task', 'event']
   },
-  dateCreated: {
-    type: Date,
-    autoValue: function () {
-      return new Date();
-    }
-  }/*,
-  locationCreated: {
-
-  },
   entryId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -33,10 +24,15 @@ Entries.attachSchema(new SimpleSchema({
   userId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-  },*/
+  }/*,
+  dateCreated: {
+    type: Date
+  },
+  locationCreated: {
 
+  }*/
 
-}));
+})]);
 
 if (Meteor.isServer) {
   // Only runs on the server
@@ -44,7 +40,7 @@ if (Meteor.isServer) {
   Meteor.publish('entries', function entriesPublication() {
     return Entries.find({
       $or: [
-        { userId: this.userId },
+        { owner: this.userId },
       ],
     });
   });

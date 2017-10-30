@@ -27,3 +27,6 @@ accounts-facebook
 accounts-google
 accounts-github
 accounts-twitter
+aldeed:simple-schema
+aldeed:autoform
+aldeed:collection2-core
