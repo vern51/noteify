@@ -7,9 +7,7 @@ SimpleSchema.extendOptions(['autoform']);
 
 import Entries from './entries.js';
 
-export const Notes = new Mongo.Collection('notes');
-
-Notes.attachSchema((new SimpleSchema([Entries, {
+Tasks.attachSchema((new SimpleSchema([Entries, {
   title: {
     type: String,
     label: "Title",
@@ -19,24 +17,27 @@ Notes.attachSchema((new SimpleSchema([Entries, {
     type: String,
     //regEx: SimpleSchema.RegEx.Id,
   },
-  userId: {
-    type: String,
-    //regEx: SimpleSchema.RegEx.Id,
+  dueDate: {
+    label: 'publish date',
+    type: Date,
+    // This is needed for the Materialize theme
+    /*autoform: {
+      type: 'pickadate'
+    }*/
   },
   description: {
     type: String,
-    label: "Description",
     autoform: {
          type: 'textarea'
-    },
-  },
-}])));
+    }
+  }
+})]);
 
 if (Meteor.isServer) {
   // Only runs on the server
   // Only publish tasks that belong to current user
-  Meteor.publish('notes', function notesPublication() {
-    return Notes.find({
+  Meteor.publish('entries', function entriesPublication() {
+    return Entries.find({
       $or: [
         { owner: this.userId },
       ],
@@ -87,4 +88,4 @@ Meteor.methods({
   }
 });
 
-export default Notes;
+export default Entries;

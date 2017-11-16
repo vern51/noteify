@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Tracker } from 'meteor/tracker';
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 
@@ -11,18 +12,41 @@ Entries.attachSchema(new SimpleSchema({
   title: {
     type: String,
     label: "Title",
-    max: 200
+    max: 100
   },
   entryType: {
     type: String,
-    allowedValues: ['note', 'task', 'event']
+    autoform: {
+    type: "select",
+    options: function () {
+      return [
+        {label: "Note", value: "note"},
+        {label: "Task", value: "task"},
+        {label: "Event", value: "event"}
+      ];
+    }
+  }
+  },
+  externalEntryId: {
+    type: String,
+    //regex: SimpleSchema.Regex.Id,
   },
   dateCreated: {
     type: Date,
     autoValue: function () {
       return new Date();
     }
-  }/*,
+  },
+  //Start Note Properties
+  /*description: {
+    type: String,
+    label: "Description"
+    autoform: {
+         type: 'textarea'
+    }
+  },*/
+
+  /*,
   locationCreated: {
 
   },
@@ -36,7 +60,7 @@ Entries.attachSchema(new SimpleSchema({
   },*/
 
 
-}));
+}, { tracker: Tracker }));
 
 if (Meteor.isServer) {
   // Only runs on the server

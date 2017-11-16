@@ -28,6 +28,7 @@ import './forms/new_entry.js';
 Template.entries.onCreated(function entriesOnCreated() {
   this.state = new ReactiveDict();
   Meteor.subscribe('entries');
+  Meteor.subscribe('notes');
 });
 
 Template.entries.helpers({

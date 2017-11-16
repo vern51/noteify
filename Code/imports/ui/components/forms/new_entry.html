@@ -1,21 +1,24 @@
 <template name="new_entry">
   <!-- {{> quickForm collection=Entries doc=this id="new_entry" type="insert"}} -->
-  {{autoform collection=Entries id="new_entry" type="insert"}}
-    <fieldset>
-      <legend>Add an Entry</legend>
-      {{> afQuickField name='title'}}
-      {{> afQuickField name='entryType'}}
-      <div class="form-group{{#if afFieldIsInvalid name='cost'}} has-error{{/if}}">
-        <div class="input-group">
-          <span class="input-group-addon">$</span>
-          {{> afFieldInput name='cost'}}
-          <span class="input-group-addon">/each</span>
+  <div class="form">
+    {{#autoForm collection=Entries id="new_entry" type="insert"}}
+      <fieldset>
+        <legend>Add an Entry</legend>
+        <div class="form-group">
+          {{> afQuickField name='title'}}
+          {{> afQuickField name='entryType' id='entryType'}}
         </div>
-        {{#if afFieldIsInvalid name='cost'}}
-        <span class="help-block">{{afFieldMessage name='cost'}}</span>
-        {{/if}}
+
+        <div class="form-group">
+          {{#if afFieldValueIs name="entryType" value="note"}}<!-- _.isEqual EntryType note}}-->
+            {{> new_note}}
+          {{/if}}
+        </div>
+      </fieldset>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
-    </fieldset>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  {{/autoForm}}
+    {{/autoForm}}
+  </div>
 </template>
