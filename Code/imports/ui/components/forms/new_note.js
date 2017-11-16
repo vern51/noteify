@@ -27,7 +27,7 @@ Template.new_note.helpers({
   Notes(){
     // This helper must be used by the new_entry template form to access
     //  Entries, else the Entries collection will be "out of the window scope"
-    return Entries;
+    return Notes;
   }
 });
 

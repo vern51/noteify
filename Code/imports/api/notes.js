@@ -15,6 +15,9 @@ Notes.attachSchema((new SimpleSchema([Entries, {
     label: "Title",
     max: 200
   },
+  noteId: {
+    type: String,
+  }
   entryId: {
     type: String,
     //regEx: SimpleSchema.RegEx.Id,
@@ -72,18 +75,6 @@ Meteor.methods({
     }
 
     Entries.remove(entryId);
-  },
-  'entries.setChecked': function(entryId, setChecked) {
-    check(entryId, String);
-    check(setChecked, Boolean);
-
-    const entry = Entries.findOne(entryId);
-    if (entry.owner !== this.userId) {
-      // Enure only the owner can check it off
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Entries.update(entryId, { $set: { checked: setChecked } });
   }
 });
 
