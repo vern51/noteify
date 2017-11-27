@@ -7,15 +7,13 @@ import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
 import { underscore } from 'underscore';
 import { Tracker } from 'meteor/tracker';
+import { Random } from 'meteor/random'
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 
 import { Entries } from '../../../api/entries.js';
-import { Notes } from '../../../api/notes.js';
 
 import './new_entry.html';
-import './new_note.html';
-import './new_note.js';
 
 // Initialize new_entry template
 Template.new_entry.onCreated(function new_entryOnCreated() {
@@ -23,6 +21,10 @@ Template.new_entry.onCreated(function new_entryOnCreated() {
   this.entryType = new ReactiveVar( "note" );
   Meteor.subscribe('entries');
 });
+
+/*Template.new_entry.onRendered(function() {
+  GoogleMaps.load({ key: 'AIzaSyDdZn2reLGeLVyQn0bJr3KFeNH0izT9ha8'});
+});*/
 
 // Implement helper methods for new_entry tempalte
 Template.new_entry.helpers({
@@ -33,26 +35,28 @@ Template.new_entry.helpers({
   },
   EntryType() {
     return Template.instance().entryType.get();
-  }/*,
-  Options() {
-    return [
-      {
-        options: [
-          {label: "Note", value: "note"},
-          {label: "Event", value: "event"},
-          {label: "Task", value: "task"}
-        ]
+  },
+  optsGoogleplace: function() {
+    return {
+      type: 'googleUI',
+      stopTimeoutOnKeyup: false,
+      googleOptions: {
+         componentRestrictions: { country:'us' }
       }
-    ];
-  }*/
+    }
+  },
+  pickerOpts: function() {
+    return {
+      step: 15, //time step in minutes
+      theme: 'dark',
+    }
+  }
 });
 
 // Implement Event Handlers for new_entry template
 Template.new_entry.events({
   'change .entryType': function( event, template ) {
     if ( $( event.target ).val() === "note" ) {
-      // Here we get our template instance from the template
-      // argument in our event handler.
       template.entryType.set( "note" );
     } else if ( $( event.target ).val() === "event" )  {
       template.entryType.set( "event" );
@@ -64,8 +68,21 @@ Template.new_entry.events({
   }
 });
 
-//Implement underscore.js functions
-// documentation for all options at http://underscorejs.org/
-Template.registerHelper('_', function(){
-  return _;
+Meteor.methods({
+  'insertNewEntry': function(doc) {
+    console.log("inserting (/forms/new_entry): ", doc.title);
+
+    Meteor.call('entries.insert', doc);
+  },
 });
+
+AutoForm.hooks({
+  new_entry: {
+    before: {
+      // I want the template instance or data context here like this
+      insert: function(doc) {
+        doc._id = Random.id();
+        return doc;
+      }
+  }
+}});

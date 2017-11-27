@@ -1,24 +1,21 @@
 <template name="entry">
   <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
     <button class="delete">&times;</button>
-
     <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
 
-    <!-- TODO: Add display for entrytype -->
+    <span class="title">{{title}} ({{entryType}})</span>
 
-    <!-- TODO: Use below template for entry type specific displays -->
-    <!--
-    {{#if isOwner}}
-      <button class="toggle-private">
-        {{#if private}}
-          Private
-        {{else}}
-          Public
-        {{/if}}
-      </button>
+    {{#if isNote entryType}}
+      <span class="description">Description: {{note.description}} </span>
     {{/if}}
-    -->
-
-    <span class="title">{{title}}</span>
+    {{#if isTask entryType}}
+      <span class="dueDate">Due: {{task.dueDate}} </span>
+      <span class="description">Description: {{task.description}} </span>
+    {{/if}}
+    {{#if isEvent entryType}}
+      <span class="date">Date: {{event.date}} </span>
+      <span class="location">Location: {{{getMapUrl event.location}}}</span>
+      <span class="description">Description : {{event.description}} </span>
+    {{/if}}
   </li>
 </template>

@@ -28,7 +28,6 @@ import './forms/new_entry.js';
 Template.entries.onCreated(function entriesOnCreated() {
   this.state = new ReactiveDict();
   Meteor.subscribe('entries');
-  Meteor.subscribe('notes');
 });
 
 Template.entries.helpers({
@@ -45,9 +44,8 @@ Template.entries.helpers({
 
 // Logic to properly handle user interaction
 Template.entries.events({
-  // TODO: Handle event to add multiple input types
   // create new entry from form event data
-  'submit .new-entry'(event) {
+  'submit .new_entry'(event) {
     // prevent default browser form submit
     event.preventDefault();
     console.log("event: ", event);
@@ -56,10 +54,11 @@ Template.entries.events({
     // Get value from element
     const target = event.target;
     const title = target.text.value;
+    const entry = target.object.value;
     //const entryType = target.entryType.value;
     check(title, String);
     // Insert an intry into Collection
-    Meteor.call('entries.insert', title, entryType);
+    Meteor.call('entries.insert', title, entryType, entry);
 
     // clear form
     target.text.value = '';
@@ -69,44 +68,11 @@ Template.entries.events({
   },
 });
 
+Meteor.methods({
+  'insertEntry': function(doc) {
+    console.log("inserting (ui/components): ", doc.title);
 
-/*Meteor.methods({
-  'entries.insert'(title) {
-    check(title, String);
-    console.log("inserting: ", title);
-    // Make sure user is logged in before inserting entry
-    if (! this.userId) {
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Entries.insert({
-      title,
-      createdAt: new Date(),
-      owner: this.userId,
-      username: Meteor.users.findOne(this.userId).username,
-    });
+    Meteor.call('entries.insert', doc);
+    return doc;
   },
-  'entries.remove'(entryId) {
-    check(entryId, String);
-
-    const entry = Entries.findOne(entryId);
-    if (entries.owner !== this.userId) {
-      // Ensure only the owner can delete it
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Entries.remove(entryId);
-  },
-  'entries.setChecked'(entryId, setChecked) {
-    check(entryId, String);
-    check(setChecked, Boolean);
-
-    const entry = Entries.findOne(entryId);
-    if (entry.owner !== this.userId) {
-      // If the entry is private, make sure only the owner can check it off
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Entrie.update(entryId, { $set: { checked: setChecked } });
-  }
-});*/
+});

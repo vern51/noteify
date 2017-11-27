@@ -4,12 +4,17 @@ import { Mongo } from 'meteor/mongo';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { check } from 'meteor/check';
 
-import Entries from '../../api/entries.js';
+import { Entries } from '../../api/entries.js';
+import { Note } from '../../api/entries.js';
+import { Task } from '../../api/entries.js';
+import { Event } from '../../api/entries.js';
 
 import './entries.html';
-import './entry.js';
-import './entries.js';
+//import './entries.js';
 import './entry.html';
+import './views/note.html';
+import './views/task.html';
+import './views/event.html';
 
 Template.entry.onCreated(function entryOnCreated() {
   this.state = new ReactiveDict();
@@ -20,6 +25,24 @@ Template.entry.helpers({
   isOwner() {
     return this.owner === Meteor.userId();
   },
+  isNote(type) {
+    return type == 'note';
+  },
+  isTask(type) {
+    return type == 'task';
+  },
+  isEvent(type) {
+    return type == 'event';
+  },
+  entryType() {
+    if (this.entryType === 'note') {
+      return 'note';
+    } else if (this.entryType === 'task') {
+      return 'task';
+    } else if (this.entryType === 'event') {
+      return 'event';
+    }
+  }
 });
 
 Template.entry.events({
