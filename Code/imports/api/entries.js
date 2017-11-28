@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Tracker } from 'meteor/tracker';
-import SimpleSchema from 'aldeed:simple-schema';
+import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 SimpleSchema.debug = true;
 
@@ -91,11 +91,10 @@ Schema.Note = new SimpleSchema({
 Schema.Task = new SimpleSchema({
   dueDate: {
     label: 'due date',
-    type: String,
+    type: Date,
     autoform: {
-      //type: 'datetimepicker'
       afFieldInput: {
-        type: "datetimepicker",
+        type: "bootstrap-datetimepicker",
       }
     }
   },
@@ -114,7 +113,7 @@ Schema.Event = new SimpleSchema({
     type: Date,
     autoform: {
       afFieldInput: {
-        type: "datetimepicker"//"bootstrap-datetimepicker"
+        type: "bootstrap-datetimepicker"
       }
     }
   },
@@ -271,9 +270,9 @@ Meteor.methods({
   },
   'entries.remove': function(entryId) {
     check(entryId, String);
-
+    console.log("removing entry: ", entryId);
     const entry = Entries.findOne(entryId);
-    if (entry.owner !== this.userId) {
+    if (entry.userId !== this.userId) {
       // Ensure only the owner can delete it
       throw new Meteor.Error('not-authorized');
     }
@@ -285,7 +284,7 @@ Meteor.methods({
     check(setChecked, Boolean);
 
     const entry = Entries.findOne(entryId);
-    if (entry.owner !== this.userId) {
+    if (entry.userId !== this.userId) {
       // Enure only the owner can check it off
       throw new Meteor.Error('not-authorized');
     }

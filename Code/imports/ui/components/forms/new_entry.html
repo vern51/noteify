@@ -16,7 +16,7 @@
           {{/if}}
           {{#if afFieldValueIs name="entryType" value="task"}}
             <!--{{> afObjectField name='task'}}-->
-            {{> afQuickField name="task.dueDate" type='datetimepicker' opts=pickerOpts}}
+            {{> afQuickField name="task.dueDate"}}
             {{> afQuickField name="task.description"}}
           {{/if}}
           {{#if afFieldValueIs name="entryType" value="event"}}

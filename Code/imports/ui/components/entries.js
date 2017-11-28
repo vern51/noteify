@@ -35,10 +35,10 @@ Template.entries.helpers({
     const instance = Template.instance();
     if (instance.state.get('hideCompleted')) {
       // If hide completed is checked, filter entries appropriately
-      return Entries.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
+      return Entries.find({ checked: { $ne: true } }, { sort: { dateCreated: -1 } });
     }
     // Otherwise, return all entries
-    return Entries.find({}, { sort: { createdAt: -1 } });
+    return Entries.find({}, { sort: { dateCreated: -1 } });
   }
 });
 

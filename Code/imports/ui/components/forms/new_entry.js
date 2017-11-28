@@ -10,6 +10,7 @@ import { Tracker } from 'meteor/tracker';
 import { Random } from 'meteor/random'
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
+//import datetimepicker from 'meteor/drewy:autoform-datetimepicker'
 
 import { Entries } from '../../../api/entries.js';
 

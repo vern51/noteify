@@ -42,6 +42,10 @@ Template.entry.helpers({
     } else if (this.entryType === 'event') {
       return 'event';
     }
+  },
+  getMapUrl(location) {
+    return "<a href=\"https://www.google.com/maps/?q=place_id:" + location.placeId +"\" target=\"_blank\">"
+          + location.fullAddress + "</a>";
   }
 });
 
