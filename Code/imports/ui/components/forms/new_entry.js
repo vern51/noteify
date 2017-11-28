@@ -45,12 +45,6 @@ Template.new_entry.helpers({
          componentRestrictions: { country:'us' }
       }
     }
-  },
-  pickerOpts: function() {
-    return {
-      step: 15, //time step in minutes
-      theme: 'dark',
-    }
   }
 });
 
@@ -67,14 +61,6 @@ Template.new_entry.events({
       template.entryType.set( "note" );
     }
   }
-});
-
-Meteor.methods({
-  'insertNewEntry': function(doc) {
-    console.log("inserting (/forms/new_entry): ", doc.title);
-
-    Meteor.call('entries.insert', doc);
-  },
 });
 
 AutoForm.hooks({

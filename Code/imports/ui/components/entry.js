@@ -10,7 +10,6 @@ import { Task } from '../../api/entries.js';
 import { Event } from '../../api/entries.js';
 
 import './entries.html';
-//import './entries.js';
 import './entry.html';
 import './views/note.html';
 import './views/task.html';

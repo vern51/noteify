@@ -8,10 +8,12 @@
     {{#if isNote entryType}}
       <span class="description">Description: {{note.description}} </span>
     {{/if}}
+
     {{#if isTask entryType}}
       <span class="dueDate">Due: {{task.dueDate}} </span>
       <span class="description">Description: {{task.description}} </span>
     {{/if}}
+
     {{#if isEvent entryType}}
       <span class="date">Date: {{event.date}} </span>
       <span class="location">Location: {{{getMapUrl event.location}}}</span>

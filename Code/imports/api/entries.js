@@ -13,70 +13,6 @@ export const Entries = new Mongo.Collection('entries');
 
 Schema = {};
 
-/*Schema.Address = new SimpleSchema({
-  fullAddress: {
-    type: String
-  },
-  lat: {
-    type: Number,
-    //decimal: true
-  },
-  lng: {
-    type: Number,
-    //decimal: true
-  },
-  geometry: {
-    type: Object,
-    blackbox: true
-  },
-  placeId: {
-    type: String
-  },
-  street: {
-    type: String,
-    max: 100
-  },
-  city: {
-    type: String,
-    max: 50
-  },
-  state: {
-    type: String,
-    regEx: /^A[LKSZRAEP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]$/
-  },
-  zip: {
-    type: String,
-    regEx: /^[0-9]{5}$/
-  },
-  country: {
-    type: String,
-    blackbox: true
-  }
-});*/
-
-/*Schema.Date = new SimpleSchema({
-  date: {
-    type: String,
-    autoform: {
-      afFieldInput: {
-        type: "datetimepicker",
-      }
-    }
-  }
-});*/
-
-/*Template.autoformGoogleplaceBasic.helpers({
-  optsGoogleplace: function() {
-    return {
-      // type: 'googleUI',
-      // stopTimeoutOnKeyup: false,
-      // googleOptions: {
-      //   componentRestrictions: { country:'us' }
-      // }
-    }
-  }
-});*/
-
 Schema.Note = new SimpleSchema({
   description: {
     type: String,
@@ -119,20 +55,9 @@ Schema.Event = new SimpleSchema({
   },
   location: {
     label: 'location',
-    type: Object,//Schema.Address,
+    type: Object,
     optional: true,
     blackbox: true
-    //type: String,
-    /*type: 'Object',
-    optional: true,
-    autoform: {
-      type: 'map',
-      afFieldInput: {
-        geolocation: true,
-        searchBox: true,
-        autolocate: true
-      }
-    }*/
   },
   description: {
     type: String,
@@ -209,10 +134,6 @@ Entries.attachSchema(new SimpleSchema({
       }
     }
   }/*,
-  entryId: {
-    type: String,
-
-  },
   locationCreated: {
 
   },*/
@@ -229,7 +150,6 @@ Meteor.methods({
     }
 
     var newEntry = {
-      //"_id": random.id(),
       "title": doc.title,
       "entryType": doc.entryType,
       "userId": this.userId,
