@@ -28,10 +28,16 @@ accounts-google
 accounts-github
 accounts-twitter
 
-#aldeed:autoform aldeed:simple-schema aldeed:collection2 aldeed:collection2-core lukemadera:autoform-googleplace ejson momentjs:moment drewy:autoform-datetimepicker
+#aldeed:autoform
+aldeed:simple-schema
+aldeed:collection2
+aldeed:collection2-core
+lukemadera:autoform-googleplace
+ejson
+momentjs:moment
+drewy:autoform-datetimepicker
 
 twbs:bootstrap
-
 
 aldeed:autoform
 #aldeed:simple-schema
