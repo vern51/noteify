@@ -6,14 +6,16 @@
           {{> afQuickField name='entryType' id='entryType'}}
           {{> afQuickField name='title'}}
 
-          {{#if afFieldValueIs name="entryType" value="note"}}
-            {{> afObjectField name='note'}}
+          <!-- adjust to not use afFieldValue and use reactive var -->
+          <!-- {{#if afFieldValueIs name="entryType" value="note"}}-->
+          {{#if IsNote}}
+            {{> afQuickField name='note.description'}}
           {{/if}}
-          {{#if afFieldValueIs name="entryType" value="task"}}
+          {{#if IsTask}}
             {{> afQuickField name="task.dueDate"}}
             {{> afQuickField name="task.description"}}
           {{/if}}
-          {{#if afFieldValueIs name="entryType" value="event"}}
+          {{#if IsEvent}}
             {{> afQuickField name="event.date"}}
             {{> afQuickField name="event.location" type="googleplace" opts=optsGoogleplace}}
             {{> afQuickField name="event.description"}}

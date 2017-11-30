@@ -2,12 +2,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { ReactiveVar } from 'meteor/reactive-var'
+import { ReactiveVar } from 'meteor/reactive-var';
 import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
 import { underscore } from 'underscore';
 import { Tracker } from 'meteor/tracker';
-import { Random } from 'meteor/random'
+import { Random } from 'meteor/random';
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 //import datetimepicker from 'meteor/drewy:autoform-datetimepicker'
@@ -19,7 +19,7 @@ import './new_entry.html';
 // Initialize new_entry template
 Template.new_entry.onCreated(function new_entryOnCreated() {
   this.state = new ReactiveDict();
-  this.entryType = new ReactiveVar( "note" );
+  this.entryType = new ReactiveVar();// "note" );
   Meteor.subscribe('entries');
 });
 
@@ -35,7 +35,20 @@ Template.new_entry.helpers({
     return Entries;
   },
   EntryType() {
-    return Template.instance().entryType.get();
+    //return Template.instance().entryType.get();
+    return AutoForm.getFieldValue('entryType');
+  },
+  IsNote() {
+    console.log(AutoForm.getFieldValue('entryType'));
+    return AutoForm.getFieldValue('entryType') == 'note';
+  },
+  IsTask() {
+    console.log(AutoForm.getFieldValue('entryType'));
+    return AutoForm.getFieldValue('entryType') == 'task';
+  },
+  IsEvent() {
+    console.log(AutoForm.getFieldValue('entryType'));
+    return AutoForm.getFieldValue('entryType') == 'event';
   },
   optsGoogleplace: function() {
     return {
@@ -58,7 +71,7 @@ Template.new_entry.events({
     } else if ( $( event.target ).val() === "task" )  {
       template.entryType.set( "task" );
     } else { // Default to note if null, error, etc.
-      template.entryType.set( "note" );
+      //template.entryType.set( "note" );
     }
   }
 });
@@ -71,5 +84,12 @@ AutoForm.hooks({
         doc._id = Random.id();
         return doc;
       }
+    },
+    after: {
+      insert: function(doc) {
+        //AutoForm.getValidationContext('new_entry').resetValidation();
+        AutoForm.resetForm('new_entry');
+      }
+    }
   }
-}});
+});

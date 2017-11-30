@@ -3,13 +3,20 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Tracker } from 'meteor/tracker';
+import { Index, MongoDBEngine } from 'meteor/easy:search'
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 SimpleSchema.debug = true;
 
 export const Entries = new Mongo.Collection('entries');
 
-
+/*const EntriesIndex = new Index({
+  collection: Entries,
+  fields: ['title'],
+  engine: new MongoDBEngine({
+    sort: () => { dateCreated: -1 },
+  }),
+})*/
 
 Schema = {};
 
@@ -221,14 +228,42 @@ Entries.allow({
 
 export default Entries;
 
-if (Meteor.isServer) {
-  // Only runs on the server
-  // Only publish tasks that belong to current user
-  Meteor.publish('entries', function entriesPublication() {
-    return Entries.find({
-      $or: [
-        { userId: this.userId },
-      ],
-    });
+if ( Meteor.isServer ) {
+  //Define which entry data members may be searched on
+  //  not necessary, but decreases search time
+  Entries._ensureIndex( { userId: 1, title: 1, entryType: 1  } );
+
+  Meteor.publish( 'entries', function (search) {
+    console.log("querying entries...search: " + search);
+
+    //check( search, Match.OneOf( String, null, undefined ) );
+
+    console.log("userId: " + this.userId);
+    let query      = {},
+        projection = { limit: 10, sort: { dateCreated: -1 } };
+
+    if ( search ) {
+      let regex = new RegExp( search, 'i' );
+      console.log("setting up query...");
+      query = {
+        $or: [
+          { userId: this.userId },
+          { title: regex },
+          { entryType: regex },
+          { dateCreated: regex },
+        ]
+      };
+
+      projection.limit = 100;
+    }
+    try {
+      //throw new Meteor.Error('Publication error', 'api/entries.js')
+      console.log("finding entries...");
+      return Entries.find( query, projection );
+    } catch (e) {
+      console.log("Publication error in api/entries.js", e)
+      //this.error(e)
+    }
+
   });
 }

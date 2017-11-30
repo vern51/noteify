@@ -8,12 +8,16 @@
     Hide Completed Entries
   </label>
 
+  <div class="pull-right">
+      <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
+      <!--{{> searchBox}}-->
+  </div>
 
   {{#if currentUser}}
     {{> new_entry}}
   {{/if}}
 
-  <ul>
+  <ul class="list-group">
     {{#each entries}}
       {{> entry}}
     {{/each}}
