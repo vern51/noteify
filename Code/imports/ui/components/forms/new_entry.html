@@ -21,9 +21,19 @@
             {{> afQuickField name="event.description"}}
           {{/if}}
 
+
+        </div>
+        <div class="form-group">
+          {{#afEachArrayItem name="tags"}}
+            <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+            {{> afFieldInput name=this.current.title}}
+          {{/afEachArrayItem}}
+          <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+          <!--{{> afQuickField name='tags'}}-->
         </div>
       </fieldset>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" onkeypress="return event.keyCode != 13;">Submit</button>
     {{/autoForm}}
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdZn2reLGeLVyQn0bJr3KFeNH0izT9ha8&libraries=places"></script>

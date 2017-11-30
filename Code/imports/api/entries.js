@@ -20,6 +20,19 @@ export const Entries = new Mongo.Collection('entries');
 
 Schema = {};
 
+Schema.Tag = new SimpleSchema({
+  title: {
+    type: String,
+    label: "title",
+    autoform: {
+         type: 'textarea',
+         max: 1000
+    },
+  }
+});
+
+
+
 Schema.Note = new SimpleSchema({
   description: {
     type: String,
@@ -112,6 +125,14 @@ Entries.attachSchema(new SimpleSchema({
     blackbox: true,
     optional: true,
   },
+  tags: {
+    type: Schema.Tag,
+    blackbox: true,
+    optional: true,
+    autoform: {
+      type: 'selectize'
+    }
+  },
   userId: {
     type: String,
     autoValue: function() {
@@ -160,6 +181,7 @@ Meteor.methods({
       "title": doc.title,
       "entryType": doc.entryType,
       "userId": this.userId,
+      "tags": doc.tags,
     };
 
     if (doc.entryType == 'note') {
