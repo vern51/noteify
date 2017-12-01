@@ -1,0 +1,18 @@
+<template name="Recipes">
+  {{#if currentUser}}
+    {{> new_entry}}
+  {{/if}}
+
+  <section class="recipes">
+
+    <div class="pull-right">
+        <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
+    </div>
+
+    <ul class="list-group">
+      {{#each entries}}
+        {{> entry}}
+      {{/each}}
+    </ul>
+  </section>
+</template>

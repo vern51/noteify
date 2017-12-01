@@ -250,7 +250,7 @@ Entries.allow({
 
 export default Entries;
 
-if ( Meteor.isServer ) {
+/*if ( Meteor.isServer ) {
   //Define which entry data members may be searched on
   //  not necessary, but decreases search time
   Entries._ensureIndex( { userId: 1, title: 1, entryType: 1  } );
@@ -288,4 +288,4 @@ if ( Meteor.isServer ) {
     }
 
   });
-}
+}*/
