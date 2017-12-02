@@ -1,25 +1,14 @@
-<template name="entries">
-  <header>
-    <h1>My Entries</h1>
-  </header>
+<template name="Entries">
 
-  <label class="hide-completed">
-    <input type="checkbox" />
-    Hide Completed Entries
-  </label>
+  {{> newEntry}}
 
-  <div class="pull-right">
-      <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
-      <!--{{> searchBox}}-->
-  </div>
-
-  {{#if currentUser}}
-    {{> new_entry}}
-  {{/if}}
-
-  <ul class="list-group">
-    {{#each entries}}
-      {{> entry}}
-    {{/each}}
-  </ul>
+  <section class="entries">
+      {{#if Template.subscriptionsReady}}
+        {{#each entries}}
+          {{> entry}}
+        {{/each}}
+        {{else}}
+          <p>Loading</p>
+      {{/if}}
+    </section>
 </template>

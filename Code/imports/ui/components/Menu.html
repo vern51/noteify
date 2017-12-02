@@ -1,0 +1,19 @@
+<template name="Menu">
+  <h1 class="page-title">My Current Menu</h1>
+  {{#each entries}}
+      {{> MenuItem}}
+  {{else}}
+    <h3>No Entries</h3>
+  {{/each}}
+</template>
+
+<template name="MenuItem">
+  <div class="menu-item">
+    <h3>{{title}}</h3>
+    <p>{{entryType}}</p>
+
+    <!--{{#each Tags}}
+        <li>{{Entry}} - <span class="amount">{{Type}}</span></li>
+    {{/each}}-->
+  </div>
+</template>

@@ -8,7 +8,8 @@ import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 SimpleSchema.debug = true;
 
-export const Entries = new Mongo.Collection('entries');
+//export const Entries = new Mongo.Collection('entries');
+Entries = new Mongo.Collection('entries');
 
 /*const EntriesIndex = new Index({
   collection: Entries,
@@ -30,8 +31,6 @@ Schema.Tag = new SimpleSchema({
     },
   }
 });
-
-
 
 Schema.Note = new SimpleSchema({
   description: {
@@ -88,9 +87,12 @@ Schema.Event = new SimpleSchema({
   }
 });
 
-Entries.attachSchema(new SimpleSchema({
+EntriesSchema = new SimpleSchema({
   _id: {
-    type: String
+    type: String,
+    autoform: {
+      hidden: true
+    }
   },
   title: {
     type: String,
@@ -100,7 +102,7 @@ Entries.attachSchema(new SimpleSchema({
   entryType: {
     type: String,
     autoform: {
-      type: "select",
+      type: "universe-select",
       options: function () {
         return [
           {label: "Note", value: "note"},
@@ -110,6 +112,7 @@ Entries.attachSchema(new SimpleSchema({
       }
     }
   },
+  //'entryType.$': String,
   event: {
     type: Schema.Event,
     blackbox: true,
@@ -124,7 +127,7 @@ Entries.attachSchema(new SimpleSchema({
     type: Schema.Task,
     blackbox: true,
     optional: true,
-  },
+  }/*,
   tags: {
     type: Schema.Tag,
     blackbox: true,
@@ -132,9 +135,12 @@ Entries.attachSchema(new SimpleSchema({
     autoform: {
       type: 'selectize'
     }
-  },
+  }*/,
   userId: {
     type: String,
+    autoform: {
+      hidden: true
+    },
     autoValue: function() {
       if ( this.isInsert ) {
         return this.userId;
@@ -145,6 +151,9 @@ Entries.attachSchema(new SimpleSchema({
     type: Date,
     label: "Date Entry Added to System",
     optional: true,
+    autoform: {
+      hidden: true
+    },
     //denyUpdate: true,
     autoValue: function() {
       if ( this.isInsert ) {
@@ -156,6 +165,9 @@ Entries.attachSchema(new SimpleSchema({
     type: Date,
     label: "Date Entry Updated in System",
     optional: true,
+    autoform: {
+      hidden: true
+    },
     autoValue: function() {
       if ( this.isUpdate || this.isInsert ) {
         return new Date();
@@ -165,7 +177,9 @@ Entries.attachSchema(new SimpleSchema({
   locationCreated: {
 
   },*/
-}), { tracker: Tracker });
+});
+
+Entries.attachSchema( EntriesSchema )
 
 Meteor.methods({
   'entries.insert': function(doc) {
@@ -181,7 +195,7 @@ Meteor.methods({
       "title": doc.title,
       "entryType": doc.entryType,
       "userId": this.userId,
-      "tags": doc.tags,
+      //"tags": doc.tags,
     };
 
     if (doc.entryType == 'note') {
@@ -248,9 +262,9 @@ Entries.allow({
   remove: function () { return true; }
 });
 
-export default Entries;
+//export default Entries;
 
-if ( Meteor.isServer ) {
+/*if ( Meteor.isServer ) {
   //Define which entry data members may be searched on
   //  not necessary, but decreases search time
   Entries._ensureIndex( { userId: 1, title: 1, entryType: 1  } );
@@ -288,4 +302,4 @@ if ( Meteor.isServer ) {
     }
 
   });
-}
+}*/
