@@ -5,23 +5,28 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Tracker } from 'meteor/tracker';
 
-import { Entries } from '../../api/entries.js';
+//import { Entries } from '../../api/entries.js';
 
 import './entries.html';
 import './entry.html';
 import './entry.js';
-import './forms/newEntry.html';
-//import './forms/newEntry.js';
 
-Template.entries.onCreated(function entriesOnCreated() {
-  this.state = new ReactiveDict();
-  Meteor.subscribe('entries');
-
-  let template = Template.instance();
+Template.Entries.created = function() {
+  console.log("creating entries template");
+  var self = this;
+  self.autorun(function(){
+    Meteor.subscribe('Entries');
+  });
+  console.log("Entries: " + Entries);
+  /*let template = Template.instance();
   template.searchQuery = new ReactiveVar();
   template.searching   = new ReactiveVar( false );
-});
+  Meteor.subscribe('entries');*/
+};
 
 /*Template.entries.onRendered(function entriesOnRendered() {
   let template = Template.instance();
@@ -41,23 +46,23 @@ Template.entries.onCreated(function entriesOnCreated() {
    });
 });*/
 
-Template.entries.helpers({
-  entries() {
+Template.Entries.helpers({
+  entries: function() {
     return Entries.find({}, { sort: { dateCreated: -1 } });
   },
-  currentUser() {
+  currentUser: function() {
     return Meteor.userId();
   },
-  searching() {
+  searching: function() {
     return Template.instance().searching.get();
   },
-  query() {
+  query: function() {
     return Template.instance().searchQuery.get();
   }
 });
 
 // Logic to properly handle user interaction
-Template.entries.events({
+Template.Entries.events({
   'change .hide-completed input'(event, instance) {
     instance.state.set('hideCompleted', event.target.checked);
   },

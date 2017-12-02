@@ -15,25 +15,28 @@ import './views/note.html';
 import './views/task.html';
 import './views/event.html';
 
-Template.entry.onCreated(function entryOnCreated() {
+Template.entry.created = function() {
   this.state = new ReactiveDict();
-  Meteor.subscribe('entries');
-});
+  Meteor.subscribe('Entries');
+};
 
 Template.entry.helpers({
-  isOwner() {
+  updateEntryId: function() {
+    return this._id;
+  },
+  isOwner: function() {
     return this.owner === Meteor.userId();
   },
-  isNote(type) {
+  isNote: function(type) {
     return type == 'note';
   },
-  isTask(type) {
+  isTask: function(type) {
     return type == 'task';
   },
-  isEvent(type) {
+  isEvent: function(type) {
     return type == 'event';
   },
-  entryType() {
+  entryType: function() {
     if (this.entryType === 'note') {
       return 'note';
     } else if (this.entryType === 'task') {
@@ -42,7 +45,7 @@ Template.entry.helpers({
       return 'event';
     }
   },
-  getMapUrl(location) {
+  getMapUrl: function(location) {
     if (location != null) {
       return "<a href=\"https://www.google.com/maps/?q=place_id:" + location.placeId +"\" target=\"_blank\">"
             + location.fullAddress + "</a>";
@@ -59,5 +62,14 @@ Template.entry.events({
   },
   'click .delete'() {
     Meteor.call('entries.remove', this._id);
+  },
+  'click .toggle-menu': function() {
+    Meteor.call('toggleMenuItem', this._id, this.inMenu);
+  },
+  'click .fa-trash': function() {
+    Meteor.call('entries.remove', this._id);
+  },
+  'click .fa-pencil': function() {
+    Session.set('editMode', !Session.get('editMode'));
   }
 });

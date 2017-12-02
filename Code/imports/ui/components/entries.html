@@ -1,14 +1,21 @@
 <template name="Entries">
+    <section class="newEntryTypes">
+      <ul>
+        <li>
+          <a href="/entries/newEntry/note">New Note</a>
+        </li>
+        <li>
+          <a href="/entries/newEntry/task">New Task</a>
+        </li>
+        <li>
+          <a href="/entries/newEntry/event">New Event</a>
+        </li>
+      </ul>
+    </section>
 
-  {{> newEntry}}
-
-  <section class="entries">
-      {{#if Template.subscriptionsReady}}
-        {{#each entries}}
+    <section class="entries">
+      {{#each entries}}
           {{> entry}}
-        {{/each}}
-        {{else}}
-          <p>Loading</p>
-      {{/if}}
+      {{/each}}
     </section>
 </template>

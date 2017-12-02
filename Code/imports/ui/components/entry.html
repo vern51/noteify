@@ -1,9 +1,10 @@
 <template name="entry">
-  <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
-    <button class="delete">&times;</button>
-    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+  <article class="entry {{#if inMenu}} in-menu{{/if}}">
+    <h3>{{title}}</h3>
+    <p>{{entryType}}</p>
 
-    <span class="title">{{title}} ({{entryType}})</span>
+    <i class="fa fa-pencil"></i>
+    <i class="fa fa-trash"></i>
 
     {{#if isNote entryType}}
       <span class="description">Description: {{note.description}} </span>
@@ -20,6 +21,14 @@
       <span class="description">Description : {{event.description}} </span>
     {{/if}}
 
-    <span class="tags">{{tags}} </span>
-  </li>
+    <!--{{#if inMenu}}
+      <button class = "btn-deny toggle-menu">Remove From Menu</button>
+    {{else}}
+      <button class = "btn-primary toggle-menu">Add To Menu</button>
+    {{/if}}
+
+    {{#if $.Session.get 'editMode'}}
+      {{> quickForm collection="Recipes" id="updateRecipeId" type="update" doc=this autosave=true}}
+    {{/if}}-->
+  </article>
 </template>

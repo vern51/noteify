@@ -1,8 +1,10 @@
-import { Entries } from '../imports/api/entries.js';
+import { Meteor } from 'meteor/meteor';
+
+//import { Entries } from '../imports/api/entries.js';
 import '../imports/api/entries.js';
 
-Meteor.publish('entries', function(){
-    return Entries.find({userId: this.userId})
+Meteor.publish('Entries', function(){
+    return Entries.find();
 });
 //for detailed page
 Meteor.publish('singleEntry', function(id){

@@ -8,6 +8,8 @@ import { Template } from 'meteor/templating';
 import { underscore } from 'underscore';
 import { Tracker } from 'meteor/tracker';
 import { Random } from 'meteor/random';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 //import datetimepicker from 'meteor/drewy:autoform-datetimepicker'
@@ -18,11 +20,16 @@ import '../../../api/entries.js'
 import './newEntry.html';
 
 // Initialize new_entry template
-Template.newEntry.onCreated(function newEntryOnCreated() {
+Template.newEntry.created = function () {
+  console.log("Creating new entry form...");
+  console.log("Type: " + type);
   this.state = new ReactiveDict();
-  this.entryTypeValue = new ReactiveVar([]);
-  Session.set("Type", "");
-  Meteor.subscribe('entries');
+  this.entryTypeValue = new ReactiveVar(type);
+  Session.set("Type", type);
+});
+
+Template.newEntry.onRendered(function () {
+
 });
 
 /*Template.newEntry.onRendered(function newEntryOnRendered() {
@@ -37,7 +44,7 @@ Template.newEntry.onCreated(function newEntryOnCreated() {
 
 // Implement helper methods for new_entry tempalte
 Template.newEntry.helpers({
-  Entries(){
+  Entries: function(){
     // This helper must be used by the new_entry template form to access
     //  Entries, else the Entries collection will be "out of the window scope"
     return Entries;
@@ -49,8 +56,9 @@ Template.newEntry.helpers({
     console.log("Entry type (reactive var): " + Template.instance().entryType.get());
     return AutoForm.getFieldValue('entryType');
   },*/
-  IsNote() {
+  IsNote: function() {
     console.log('IsNote() triggered...');
+    //return FlowRouter.getParam('type') === 'note';
     console.log("Entry type (field value): " + AutoForm.getFieldValue("entryType"));
     console.log("Entry type (reactive var): " + Template.instance().entryType.get());
     String type = this.entryType.value;//Template.instance().entryTypeValue.get();
@@ -61,11 +69,11 @@ Template.newEntry.helpers({
     //return AutoForm.getFieldValue("entryType") == 'note';
     //return Template.instance().entryType.get() == 'note';
   },
-  IsTask() {
+  IsTask: function() {
     console.log(AutoForm.getFieldValue('entryType'));
     return AutoForm.getFieldValue('entryType') == 'task';
   },
-  IsEvent() {
+  IsEvent: function() {
     console.log(AutoForm.getFieldValue('entryType'));
     return AutoForm.getFieldValue('entryType') == 'event';
   },

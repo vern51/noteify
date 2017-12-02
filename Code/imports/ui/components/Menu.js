@@ -6,12 +6,12 @@ import { Entries } from '../../api/entries.js';
 Template.Menu.onCreated(function() {
   var self = this;
   self.autorun(function(){
-    self.subscribe('entries');
+    self.subscribe('Entries');
   });
 });
 
 Template.Menu.helpers({
-  entries: ()=> {
+  entries: function() {
     return Entries.find({inMenu: true});
   }
 });

@@ -102,7 +102,7 @@ EntriesSchema = new SimpleSchema({
   entryType: {
     type: String,
     autoform: {
-      type: "universe-select",
+      type: "select",//"universe-select",
       options: function () {
         return [
           {label: "Note", value: "note"},
@@ -112,7 +112,6 @@ EntriesSchema = new SimpleSchema({
       }
     }
   },
-  //'entryType.$': String,
   event: {
     type: Schema.Event,
     blackbox: true,

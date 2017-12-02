@@ -1,5 +1,6 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Tracker } from 'meteor/tracker';
 
 // Import to load these templates
 //import '../ui/layouts/body.js';
@@ -10,6 +11,8 @@ import '../ui/layouts/HomeLayouts.html';
 import '../ui/components/entries.html';
 import '../ui/components/partials/Header.html';
 import '../ui/components/partials/SideNav.html';
+import '../ui/components/forms/newEntry.html';
+import '../ui/components/forms/newNote.html';
 
 //import '../../client/components/entries.html';
 //import '../ui/pages/root_redirector.js';
@@ -37,7 +40,7 @@ FlowRouter.notFound = {
 
 //login redirecting
 Accounts.onLogin(function(){
-  FlowRouter.go('recipe-book');
+  FlowRouter.go('entries');
 });
 
 //logout redirecting
@@ -57,18 +60,45 @@ FlowRouter.route('/',{
   name: 'home',
   action() {
     if(Meteor.userId()) {
-      FlowRouter.go('recipe-book');
+      FlowRouter.go('entries');
     }
     GAnalytics.pageview();
     BlazeLayout.render('HomeLayout');
   }
 });
 
-FlowRouter.route('/recipe-book', {
-  name: 'recipe-book',
+FlowRouter.route('/entries', {
+  name: 'Entries',
   action() {
     GAnalytics.pageview();
     BlazeLayout.render('MainLayout', {main: 'Entries'});
+  }
+});
+
+FlowRouter.route('/entries/newEntry/note', {
+  name: 'newNote',
+  action() {
+    GAnalytics.pageview();
+    console.log("Routing to new note...");
+    BlazeLayout.render('MainLayout', {main: 'newNote'});
+  }
+});
+
+FlowRouter.route('/entries/newEntry/task', {
+  name: 'newTask',
+  action() {
+    GAnalytics.pageview();
+    console.log("Routing to new task...");
+    BlazeLayout.render('MainLayout', {main: 'newTask'});
+  }
+});
+
+FlowRouter.route('/entries/newEntry/event', {
+  name: 'newEvent',
+  action() {
+    GAnalytics.pageview();
+    console.log("Routing to new event...");
+    BlazeLayout.render('MainLayout', {main: 'newEvent'});
   }
 });
 
