@@ -17,18 +17,18 @@ import './entry.js';
 
 Template.Entries.created = function() {
   console.log("creating entries template");
-  var self = this;
-  self.autorun(function(){
+  //var self = this;
+  /*self.autorun(function(){
     Meteor.subscribe('Entries');
-  });
-  console.log("Entries: " + Entries);
+  });*/
+  //console.log("Entries: " + Entries);
   /*let template = Template.instance();
   template.searchQuery = new ReactiveVar();
   template.searching   = new ReactiveVar( false );
   Meteor.subscribe('entries');*/
 };
 
-/*Template.entries.onRendered(function entriesOnRendered() {
+Template.Entries.rendered = function() {
   let template = Template.instance();
 
   template.searchQuery = new ReactiveVar();
@@ -38,13 +38,14 @@ Template.Entries.created = function() {
     console.log("autorun searchQuery: " + template.searchQuery.get());
     console.log("userId: " + Meteor.userId());
     try {
-      Meteor.subscribe('entries', template.searchQuery.get());
+      console.log("Searching with query: " + template.searchQuery.get());
+      Meteor.subscribe('Entries', template.searchQuery.get());
     } catch (e) {
       console.log("error subscribing...", e);
     }
 
    });
-});*/
+};
 
 Template.Entries.helpers({
   entries: function() {
