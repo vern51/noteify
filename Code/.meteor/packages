@@ -23,7 +23,7 @@ accounts-password
 practicalmeteor:mocha@2.1.1-rc.1
 kadira:blaze-layout
 kadira:flow-router
-accounts-facebook
+#accounts-facebook
 accounts-google
 accounts-github
 accounts-twitter

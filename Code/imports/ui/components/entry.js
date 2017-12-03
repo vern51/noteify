@@ -23,6 +23,9 @@ Template.entry.created = function() {
 };
 
 Template.entry.helpers({
+  getDate: function() {
+    //return this.date.format('MMMM Do YYYY, h:mm:ss a')
+  },
   edit: function() {
     return Template.instance().editing.get();
   },
@@ -30,7 +33,7 @@ Template.entry.helpers({
     return this._id;
   },
   isOwner: function() {
-    return this.owner === Meteor.userId();
+    return this.userId === Meteor.userId();
   },
   isNote: function(type) {
     return type == 'note';

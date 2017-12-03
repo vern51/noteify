@@ -1,5 +1,4 @@
 accounts-base@1.2.9
-accounts-facebook@1.0.10
 accounts-github@1.0.10
 accounts-google@1.0.10
 accounts-oauth@1.1.13
@@ -44,7 +43,6 @@ ejson@1.0.12
 email@1.1.16
 erasaur:meteor-lodash@4.0.0
 es5-shim@4.6.15
-facebook@1.2.8
 fastclick@1.0.12
 fortawesome:fontawesome@4.7.0
 geojson-utils@1.0.9

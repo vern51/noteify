@@ -1,13 +1,13 @@
 <template name="entry">
   <article class="entry {{#if inMenu}} in-menu{{/if}}">
     <h3>{{title}}</h3>
-    <p>{{entryType}}</p>
+    <p>Entry Type: {{entryType}}</p>
 
     <i class="fa fa-pencil"></i>
     <i class="fa fa-trash"></i>
 
     {{#if isNote entryType}}
-      <span class="description">Description: {{note.description}} </span>
+      <p class="description">Description: {{note.description}} </p>
       {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">
           {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
@@ -36,8 +36,8 @@
     {{/if}}
 
     {{#if isTask entryType}}
-      <span class="dueDate">Due: {{task.dueDate}} </span>
-      <span class="description">Description: {{task.description}} </span>
+      <p class="dueDate">Due: {{task.dueDate}} </p>
+      <p class="description">Description: {{task.description}} </p>
 
       {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">
@@ -67,9 +67,9 @@
     {{/if}}
 
     {{#if isEvent entryType}}
-      <span class="date">Date: {{event.date}} </span>
-      <span class="location">Location: {{{getMapUrl event.location}}}</span>
-      <span class="description">Description : {{event.description}} </span>
+      <p class="date">Date: {{event.date}} </p>
+      <p class="location">Location: {{{getMapUrl event.location}}}</p>
+      <p class="description">Description : {{event.description}} </p>
 
       {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">

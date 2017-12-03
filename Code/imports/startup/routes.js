@@ -41,7 +41,7 @@ FlowRouter.notFound = {
 
 //login redirecting
 Accounts.onLogin(function(){
-  FlowRouter.go('entries');
+  FlowRouter.go('/entries');
 });
 
 //logout redirecting
@@ -142,6 +142,13 @@ BlazeLayout.render('MainLayout', {main: 'Users'});
 });
 FlowRouter.route('/Share', {
 name: 'Share',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'Share'});
+}
+});
+FlowRouter.route('/Notes', {
+name: 'Notes',
 action() {
 GAnalytics.pageview();
 BlazeLayout.render('MainLayout', {main: 'Share'});
