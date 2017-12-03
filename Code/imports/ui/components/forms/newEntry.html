@@ -1,0 +1,42 @@
+<template name="newEntry">
+  <div class="new-entry-container">
+  <!--{{> quickForm collection="Entries" id="newEntry" type="insert"
+  class="new-entry-form"}}-->
+    {{#autoForm collection="Entries" id="newEntry" type="insert"}}
+      <fieldset>
+        <legend>Add an Entry</legend>
+        <div class="form-group">
+          {{> afQuickField name='entryType' id='entryType'}}
+          {{> afQuickField name='title'}}
+
+          {{#if IsNote}}
+            {{> afQuickField name='note.description'}}
+          {{/if}}
+          {{#if IsTask}}
+            {{> afQuickField name="task.dueDate"}}
+            {{> afQuickField name="task.description"}}
+          {{/if}}
+          {{#if IsEvent}}
+            {{> afQuickField name="event.date"}}
+            {{> afQuickField name="event.location" type="googleplace" opts=optsGoogleplace}}
+            {{> afQuickField name="event.description"}}
+          {{/if}}
+
+
+        </div>
+        <!--<div class="form-group">
+          {{#afEachArrayItem name="tags"}}
+            <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+            {{> afFieldInput name=this.current.title}}
+          {{/afEachArrayItem}}
+          <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+        </div>-->
+      </fieldset>
+      <button type="submit" class="btn btn-primary" onkeypress="return event.keyCode != 13;">Submit</button>
+    {{/autoForm}}
+
+  </div>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdZn2reLGeLVyQn0bJr3KFeNH0izT9ha8&libraries=places"></script>
+</template>

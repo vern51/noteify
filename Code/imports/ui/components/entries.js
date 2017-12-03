@@ -2,77 +2,115 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { ReactiveVar } from 'meteor/reactive-var';
 import { check } from 'meteor/check';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { Tracker } from 'meteor/tracker';
 
-import { Entries } from '../../api/entries.js';
+//import { Entries } from '../../api/entries.js';
 
 import './entries.html';
 import './entry.html';
 import './entry.js';
-import './forms/new_entry.html';
-import './forms/new_entry.js';
 
-/*if (Meteor.isServer) {
-  // Only runs on the server
-  // Only publish tasks that belong to current user
-  Meteor.publish('entries', function entriesPublication() {
-    return Entries.find({
-      $or: [
-        { owner: this.userId },
-      ],
-    });
-  });
-}*/
+Template.Entries.created = function() {
+  console.log("creating entries template");
 
-Template.entries.onCreated(function entriesOnCreated() {
-  this.state = new ReactiveDict();
-  Meteor.subscribe('entries');
-});
+  let template = Template.instance();
 
-Template.entries.helpers({
-  entries() {
-    const instance = Template.instance();
-    if (instance.state.get('hideCompleted')) {
-      // If hide completed is checked, filter entries appropriately
-      return Entries.find({ checked: { $ne: true } }, { sort: { dateCreated: -1 } });
+  template.searchQuery = new ReactiveVar();
+  template.searching   = new ReactiveVar( false );
+
+  template.autorun( () => {
+    console.log("autorun searchQuery: " + template.searchQuery.get());
+    console.log("userId: " + Meteor.userId());
+    try {
+      console.log("Searching with query: " + template.searchQuery.get());
+      Meteor.subscribe('Entries', template.searchQuery.get());
+    } catch (e) {
+      console.log("error subscribing...", e);
     }
-    // Otherwise, return all entries
-    return Entries.find({}, { sort: { dateCreated: -1 } });
+
+   });
+
+  //var self = this;
+  /*self.autorun(function(){
+    Meteor.subscribe('Entries');
+  });*/
+  //console.log("Entries: " + Entries);
+  /*let template = Template.instance();
+  template.searchQuery = new ReactiveVar();
+  template.searching   = new ReactiveVar( false );
+  Meteor.subscribe('entries');*/
+};
+
+Template.Entries.rendered = function() {
+
+};
+
+Template.Entries.helpers({
+  entries: function() {
+    //return Entries.find();
+    let search = Template.instance().searchQuery.get();
+    console.log("helper searchQuery: " + search);
+    console.log("userId: " + Meteor.userId());
+
+    let query      = {},
+        projection = { limit: 10, sort: { dateCreated: -1 } };
+
+    if ( search ) {
+      let regex = new RegExp( search, 'i' );
+      console.log("setting up query...");
+      query = {
+        $or: [
+          { userId: this.userId },
+          { title: regex },
+          { entryType: regex },
+          { dateCreated: regex },
+        ]
+      };
+
+      projection.limit = 100;
+    }
+    try {
+      //throw new Meteor.Error('Publication error', 'api/entries.js')
+      console.log("finding entries...");
+      return Entries.find( query, projection );
+    } catch (e) {
+      console.log("Error finding entries...", e)
+      //this.error(e)
+    }
+
+  },
+  currentUser: function() {
+    return Meteor.userId();
+  },
+  searching: function() {
+    return Template.instance().searching.get();
+  },
+  query: function() {
+    return Template.instance().searchQuery.get();
   }
 });
 
 // Logic to properly handle user interaction
-Template.entries.events({
-  // create new entry from form event data
-  'submit .new_entry'(event) {
-    // prevent default browser form submit
-    event.preventDefault();
-    console.log("event: ", event);
-    console.log("submitting ", target);
-
-    // Get value from element
-    const target = event.target;
-    const title = target.text.value;
-    const entry = target.object.value;
-    //const entryType = target.entryType.value;
-    check(title, String);
-    // Insert an intry into Collection
-    Meteor.call('entries.insert', title, entryType, entry);
-
-    // clear form
-    target.text.value = '';
-  },
+Template.Entries.events({
   'change .hide-completed input'(event, instance) {
     instance.state.set('hideCompleted', event.target.checked);
   },
-});
+  'keyup [name="search"]' ( event, template ) {
+    let value = event.target.value.trim();
+    console.log("reading search input..." + value);
 
-Meteor.methods({
-  'insertEntry': function(doc) {
-    console.log("inserting (ui/components): ", doc.title);
+    if ( value !== '' && event.keyCode === 13 ) {
+      template.searchQuery.set( value );
+      template.searching.set( true );
+    }
 
-    Meteor.call('entries.insert', doc);
-    return doc;
-  },
+    if ( value === '' ) {
+      template.searchQuery.set( value );
+    }
+  }
 });

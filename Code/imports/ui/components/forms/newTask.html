@@ -1,0 +1,26 @@
+<template name="newTask">
+  <div class="new-entry-container">
+    {{#autoForm collection="Entries" id="newTask" type="insert"}}
+      <fieldset>
+        <legend>Add a Task</legend>
+        <div class="form-group">
+          {{> afQuickField name='title'}}
+          {{> afQuickField name='entryType' readonly="true" value='task'}}
+          {{> afQuickField name="task.dueDate"}}
+          {{> afQuickField name="task.description"}}
+          <!--{{> afQuickField name="task.difficulty" type="noUiSlider" min=1 max=10 step=1}}-->
+        </div>
+        <!--<div class="form-group">
+          {{#afEachArrayItem name="tags"}}
+            <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+            {{> afFieldInput name=this.current.title}}
+          {{/afEachArrayItem}}
+          <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+        </div>-->
+      </fieldset>
+      <button type="submit" class="btn btn-primary" onkeypress="return event.keyCode != 13;">Submit</button>
+    {{/autoForm}}
+
+  </div>
+</template>

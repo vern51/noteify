@@ -1,21 +1,19 @@
-<template name="entries">
-  <header>
-    <h1>My Entries</h1>
-  </header>
+<template name="Entries">
+    <section class="newEntryTypes">
+      <button class = "btn-primary"><a href="/entries/newEntry/note">New Note</a> </button>
+      <button class = "btn-primary"> <a href="/entries/newEntry/task">New Task</a></button>
+      <button class = "btn-primary"><a href="/entries/newEntry/event">New Event</a></button>
 
-  <label class="hide-completed">
-    <input type="checkbox" />
-    Hide Completed Entries
-  </label>
+      <div class="pull-right">
+          <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
+      </div>
+    </section>
 
 
-  {{#if currentUser}}
-    {{> new_entry}}
-  {{/if}}
 
-  <ul>
-    {{#each entries}}
-      {{> entry}}
-    {{/each}}
-  </ul>
+    <section class="entries">
+      {{#each entries}}
+          {{> entry}}
+      {{/each}}
+    </section>
 </template>

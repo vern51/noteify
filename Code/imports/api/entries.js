@@ -3,79 +3,34 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Tracker } from 'meteor/tracker';
+import { Index, MongoDBEngine } from 'meteor/easy:search'
 import SimpleSchema from 'simpl-schema';
 SimpleSchema.extendOptions(['autoform']);
 SimpleSchema.debug = true;
 
-export const Entries = new Mongo.Collection('entries');
+//export const Entries = new Mongo.Collection('entries');
+Entries = new Mongo.Collection('entries');
 
-
+/*const EntriesIndex = new Index({
+  collection: Entries,
+  fields: ['title'],
+  engine: new MongoDBEngine({
+    sort: () => { dateCreated: -1 },
+  }),
+})*/
 
 Schema = {};
 
-/*Schema.Address = new SimpleSchema({
-  fullAddress: {
-    type: String
-  },
-  lat: {
-    type: Number,
-    //decimal: true
-  },
-  lng: {
-    type: Number,
-    //decimal: true
-  },
-  geometry: {
-    type: Object,
-    blackbox: true
-  },
-  placeId: {
-    type: String
-  },
-  street: {
+Schema.Tag = new SimpleSchema({
+  title: {
     type: String,
-    max: 100
-  },
-  city: {
-    type: String,
-    max: 50
-  },
-  state: {
-    type: String,
-    regEx: /^A[LKSZRAEP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]$/
-  },
-  zip: {
-    type: String,
-    regEx: /^[0-9]{5}$/
-  },
-  country: {
-    type: String,
-    blackbox: true
-  }
-});*/
-
-/*Schema.Date = new SimpleSchema({
-  date: {
-    type: String,
+    label: "title",
     autoform: {
-      afFieldInput: {
-        type: "datetimepicker",
-      }
-    }
+         type: 'textarea',
+         max: 1000
+    },
   }
-});*/
-
-/*Template.autoformGoogleplaceBasic.helpers({
-  optsGoogleplace: function() {
-    return {
-      // type: 'googleUI',
-      // stopTimeoutOnKeyup: false,
-      // googleOptions: {
-      //   componentRestrictions: { country:'us' }
-      // }
-    }
-  }
-});*/
+});
 
 Schema.Note = new SimpleSchema({
   description: {
@@ -104,6 +59,20 @@ Schema.Task = new SimpleSchema({
          type: 'textarea',
          max: 500
     }
+  },
+  difficulty: {
+    type: Number,
+    optional: true,
+    max: 10,
+    min: 1,
+    autoform: {
+      type: "noUiSlider",
+      step: 1,
+      noUiSlider_pipsOptions: {
+        mode: 'steps',
+        density: 10
+      }
+    }
   }
 });
 
@@ -119,20 +88,9 @@ Schema.Event = new SimpleSchema({
   },
   location: {
     label: 'location',
-    type: Object,//Schema.Address,
+    type: Object,
     optional: true,
     blackbox: true
-    //type: String,
-    /*type: 'Object',
-    optional: true,
-    autoform: {
-      type: 'map',
-      afFieldInput: {
-        geolocation: true,
-        searchBox: true,
-        autolocate: true
-      }
-    }*/
   },
   description: {
     type: String,
@@ -143,9 +101,12 @@ Schema.Event = new SimpleSchema({
   }
 });
 
-Entries.attachSchema(new SimpleSchema({
+EntriesSchema = new SimpleSchema({
   _id: {
-    type: String
+    type: String,
+    autoform: {
+      hidden: true
+    }
   },
   title: {
     type: String,
@@ -155,7 +116,7 @@ Entries.attachSchema(new SimpleSchema({
   entryType: {
     type: String,
     autoform: {
-      type: "select",
+      type: "select",//"universe-select",
       options: function () {
         return [
           {label: "Note", value: "note"},
@@ -179,9 +140,20 @@ Entries.attachSchema(new SimpleSchema({
     type: Schema.Task,
     blackbox: true,
     optional: true,
-  },
+  }/*,
+  tags: {
+    type: Schema.Tag,
+    blackbox: true,
+    optional: true,
+    autoform: {
+      type: 'selectize'
+    }
+  }*/,
   userId: {
     type: String,
+    autoform: {
+      hidden: true
+    },
     autoValue: function() {
       if ( this.isInsert ) {
         return this.userId;
@@ -192,6 +164,9 @@ Entries.attachSchema(new SimpleSchema({
     type: Date,
     label: "Date Entry Added to System",
     optional: true,
+    autoform: {
+      hidden: true
+    },
     //denyUpdate: true,
     autoValue: function() {
       if ( this.isInsert ) {
@@ -203,20 +178,21 @@ Entries.attachSchema(new SimpleSchema({
     type: Date,
     label: "Date Entry Updated in System",
     optional: true,
+    autoform: {
+      hidden: true
+    },
     autoValue: function() {
       if ( this.isUpdate || this.isInsert ) {
         return new Date();
       }
     }
   }/*,
-  entryId: {
-    type: String,
-
-  },
   locationCreated: {
 
   },*/
-}), { tracker: Tracker });
+});
+
+Entries.attachSchema( EntriesSchema )
 
 Meteor.methods({
   'entries.insert': function(doc) {
@@ -229,10 +205,10 @@ Meteor.methods({
     }
 
     var newEntry = {
-      //"_id": random.id(),
       "title": doc.title,
       "entryType": doc.entryType,
       "userId": this.userId,
+      //"tags": doc.tags,
     };
 
     if (doc.entryType == 'note') {
@@ -299,16 +275,44 @@ Entries.allow({
   remove: function () { return true; }
 });
 
-export default Entries;
+//export default Entries;
 
-if (Meteor.isServer) {
-  // Only runs on the server
-  // Only publish tasks that belong to current user
-  Meteor.publish('entries', function entriesPublication() {
-    return Entries.find({
-      $or: [
-        { userId: this.userId },
-      ],
-    });
+/*if ( Meteor.isServer ) {
+  //Define which entry data members may be searched on
+  //  not necessary, but decreases search time
+  Entries._ensureIndex( { userId: 1, title: 1, entryType: 1  } );
+
+  Meteor.publish( 'entries', function (search) {
+    console.log("querying entries...search: " + search);
+
+    //check( search, Match.OneOf( String, null, undefined ) );
+
+    console.log("userId: " + this.userId);
+    let query      = {},
+        projection = { limit: 10, sort: { dateCreated: -1 } };
+
+    if ( search ) {
+      let regex = new RegExp( search, 'i' );
+      console.log("setting up query...");
+      query = {
+        $or: [
+          { userId: this.userId },
+          { title: regex },
+          { entryType: regex },
+          { dateCreated: regex },
+        ]
+      };
+
+      projection.limit = 100;
+    }
+    try {
+      //throw new Meteor.Error('Publication error', 'api/entries.js')
+      console.log("finding entries...");
+      return Entries.find( query, projection );
+    } catch (e) {
+      console.log("Publication error in api/entries.js", e)
+      //this.error(e)
+    }
+
   });
-}
+}*/
