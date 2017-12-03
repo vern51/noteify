@@ -59,6 +59,20 @@ Schema.Task = new SimpleSchema({
          type: 'textarea',
          max: 500
     }
+  },
+  difficulty: {
+    type: Number,
+    optional: true,
+    max: 10,
+    min: 1,
+    autoform: {
+      type: "noUiSlider",
+      step: 1,
+      noUiSlider_pipsOptions: {
+        mode: 'steps',
+        density: 10
+      }
+    }
   }
 });
 

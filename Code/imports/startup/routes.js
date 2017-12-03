@@ -11,6 +11,7 @@ import '../ui/layouts/HomeLayouts.html';
 import '../ui/components/entries.html';
 import '../ui/components/partials/Header.html';
 import '../ui/components/partials/SideNav.html';
+import '../ui/components/partials/LaterPhaseTemplates.html';
 import '../ui/components/forms/newEntry.html';
 import '../ui/components/forms/newNote.html';
 
@@ -122,4 +123,41 @@ FlowRouter.route('/shopping-list', {
   action() {
     BlazeLayout.render('MainLayout', {main: 'ShoppingList'});
   }
+});
+
+FlowRouter.route('/AccountSettings', {
+name: 'AccountSettings',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'AccountSettings'});
+}
+});
+
+FlowRouter.route('/Users', {
+name: 'AccountSettings',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'Users'});
+}
+});
+FlowRouter.route('/Share', {
+name: 'Share',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'Share'});
+}
+});
+FlowRouter.route('/MobileApp', {
+name: 'MobileApp',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'MobileApp'});
+}
+});
+FlowRouter.route('/FAQ', {
+name: 'FAQ',
+action() {
+GAnalytics.pageview();
+BlazeLayout.render('MainLayout', {main: 'FAQ'});
+}
 });
