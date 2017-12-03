@@ -17,18 +17,7 @@ import './entry.js';
 
 Template.Entries.created = function() {
   console.log("creating entries template");
-  //var self = this;
-  /*self.autorun(function(){
-    Meteor.subscribe('Entries');
-  });*/
-  //console.log("Entries: " + Entries);
-  /*let template = Template.instance();
-  template.searchQuery = new ReactiveVar();
-  template.searching   = new ReactiveVar( false );
-  Meteor.subscribe('entries');*/
-};
 
-Template.Entries.rendered = function() {
   let template = Template.instance();
 
   template.searchQuery = new ReactiveVar();
@@ -45,11 +34,55 @@ Template.Entries.rendered = function() {
     }
 
    });
+
+  //var self = this;
+  /*self.autorun(function(){
+    Meteor.subscribe('Entries');
+  });*/
+  //console.log("Entries: " + Entries);
+  /*let template = Template.instance();
+  template.searchQuery = new ReactiveVar();
+  template.searching   = new ReactiveVar( false );
+  Meteor.subscribe('entries');*/
+};
+
+Template.Entries.rendered = function() {
+
 };
 
 Template.Entries.helpers({
   entries: function() {
-    return Entries.find({}, { sort: { dateCreated: -1 } });
+    //return Entries.find();
+    let search = Template.instance().searchQuery.get();
+    console.log("helper searchQuery: " + search);
+    console.log("userId: " + Meteor.userId());
+
+    let query      = {},
+        projection = { limit: 10, sort: { dateCreated: -1 } };
+
+    if ( search ) {
+      let regex = new RegExp( search, 'i' );
+      console.log("setting up query...");
+      query = {
+        $or: [
+          { userId: this.userId },
+          { title: regex },
+          { entryType: regex },
+          //{ dateCreated: regex },
+        ]
+      };
+
+      projection.limit = 100;
+    }
+    try {
+      //throw new Meteor.Error('Publication error', 'api/entries.js')
+      console.log("finding entries...");
+      return Entries.find( query, projection );
+    } catch (e) {
+      console.log("Error finding entries...", e)
+      //this.error(e)
+    }
+
   },
   currentUser: function() {
     return Meteor.userId();
@@ -68,8 +101,8 @@ Template.Entries.events({
     instance.state.set('hideCompleted', event.target.checked);
   },
   'keyup [name="search"]' ( event, template ) {
-    console.log("reading search input...");
     let value = event.target.value.trim();
+    console.log("reading search input..." + value);
 
     if ( value !== '' && event.keyCode === 13 ) {
       template.searchQuery.set( value );

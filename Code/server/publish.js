@@ -8,18 +8,19 @@ import '../imports/api/entries.js';
 });*/
 
 Meteor.publish('Entries', function(search){
+    console.log("publishing entries on server... search: " + search);
     let query      = {},
     projection = { limit: 10, sort: { dateCreated: -1 } };
 
     if ( search ) {
       let regex = new RegExp( search, 'i' );
-      console.log("setting up query...");
+      console.log("setting up query: " + search);
       query = {
         $or: [
           { userId: this.userId },
           { title: regex },
-          { entryType: regex },
-          { dateCreated: regex },
+          //{ entryType: regex },
+          //{ dateCreated: regex },
         ]
       };
 
