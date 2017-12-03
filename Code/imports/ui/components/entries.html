@@ -3,11 +3,13 @@
       <button class = "btn-primary"><a href="/entries/newEntry/note">New Note</a> </button>
       <button class = "btn-primary"> <a href="/entries/newEntry/task">New Task</a></button>
       <button class = "btn-primary"><a href="/entries/newEntry/event">New Event</a></button>
+
+      <div class="pull-right">
+          <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
+      </div>
     </section>
 
-    <section class="search">
-        <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
-    </section>
+
 
     <section class="entries">
       {{#each entries}}
