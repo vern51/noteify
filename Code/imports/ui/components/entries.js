@@ -68,7 +68,7 @@ Template.Entries.helpers({
           { userId: this.userId },
           { title: regex },
           { entryType: regex },
-          //{ dateCreated: regex },
+          { dateCreated: regex },
         ]
       };
 

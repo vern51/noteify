@@ -60,7 +60,7 @@ FlowRouter.route('/',{
   name: 'home',
   action() {
     if(Meteor.userId()) {
-      FlowRouter.go('entries');
+      FlowRouter.go('/entries');
     }
     GAnalytics.pageview();
     BlazeLayout.render('HomeLayout');

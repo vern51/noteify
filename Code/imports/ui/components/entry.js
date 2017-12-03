@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Mongo } from 'meteor/mongo';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { ReactiveVar } from 'meteor/reactive-var';
 import { check } from 'meteor/check';
 
 import { Entries } from '../../api/entries.js';
@@ -17,10 +18,14 @@ import './views/event.html';
 
 Template.entry.created = function() {
   this.state = new ReactiveDict();
+  this.editing = new ReactiveVar( false );
   Meteor.subscribe('Entries');
 };
 
 Template.entry.helpers({
+  edit: function() {
+    return Template.instance().editing.get();
+  },
   updateEntryId: function() {
     return this._id;
   },
@@ -52,17 +57,19 @@ Template.entry.helpers({
     } else {
       return "";
     }
+  },
+  optsGoogleplace: function() {
+    return {
+      type: 'googleUI',
+      stopTimeoutOnKeyup: false,
+      googleOptions: {
+         componentRestrictions: { country:'us' }
+      }
+    }
   }
 });
 
 Template.entry.events({
-  'click .toggle-checked'() {
-    // Set the checked property to the opposite of its current value
-    Meteor.call('entries.setChecked', this._id, !this.checked);
-  },
-  'click .delete'() {
-    Meteor.call('entries.remove', this._id);
-  },
   'click .toggle-menu': function() {
     Meteor.call('toggleMenuItem', this._id, this.inMenu);
   },
@@ -71,5 +78,6 @@ Template.entry.events({
   },
   'click .fa-pencil': function() {
     Session.set('editMode', !Session.get('editMode'));
+    //this.editing.set( !this.editing.get() ); //!Template.instance().editing.get()
   }
 });

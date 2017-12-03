@@ -5,6 +5,8 @@ import { Tracker } from 'meteor/tracker';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import { ReactiveDict } from 'meteor/reactive-dict';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 import '../imports/startup/accounts-config.js';
 import '../imports/startup/routes.js';

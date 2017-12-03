@@ -8,27 +8,103 @@
 
     {{#if isNote entryType}}
       <span class="description">Description: {{note.description}} </span>
+      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+        <div class="new-entry-container">
+          {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
+            <fieldset>
+              <legend>Edit Note</legend>
+              <div class="form-group">
+                {{> afQuickField name='title'}}
+                {{> afQuickField name='entryType' readonly="true" value='note'}}
+                {{> afQuickField name='note.description'}}
+              </div>
+              <!--<div class="form-group">
+                {{#afEachArrayItem name="tags"}}
+                  <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+                  {{> afFieldInput name=this.current.title}}
+                {{/afEachArrayItem}}
+                <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+              </div>-->
+            </fieldset>
+          {{/autoForm}}
+
+        </div>
+
+      {{/if}}
+
     {{/if}}
 
     {{#if isTask entryType}}
       <span class="dueDate">Due: {{task.dueDate}} </span>
       <span class="description">Description: {{task.description}} </span>
+
+      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+        <div class="new-entry-container">
+          {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
+            <fieldset>
+              <legend>Edit Task</legend>
+              <div class="form-group">
+                {{> afQuickField name='title'}}
+                {{> afQuickField name='entryType' readonly="true" value='task'}}
+                {{> afQuickField name="task.dueDate"}}
+                {{> afQuickField name="task.description"}}
+              </div>
+              <!--<div class="form-group">
+                {{#afEachArrayItem name="tags"}}
+                  <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+                  {{> afFieldInput name=this.current.title}}
+                {{/afEachArrayItem}}
+                <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+              </div>-->
+            </fieldset>
+          {{/autoForm}}
+
+        </div>
+
+      {{/if}}
     {{/if}}
 
     {{#if isEvent entryType}}
       <span class="date">Date: {{event.date}} </span>
       <span class="location">Location: {{{getMapUrl event.location}}}</span>
       <span class="description">Description : {{event.description}} </span>
+
+      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+        <div class="new-entry-container">
+          {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
+            <fieldset>
+              <legend>Edit Event</legend>
+              <div class="form-group">
+                {{> afQuickField name='title'}}
+                {{> afQuickField name='entryType' readonly="true" value='event'}}
+                {{> afQuickField name="event.date"}}
+                {{> afQuickField name="event.location" type="googleplace" opts=optsGoogleplace}}
+                {{> afQuickField name="event.description"}}
+              </div>
+              <!--<div class="form-group">
+                {{#afEachArrayItem name="tags"}}
+                  <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+                  {{> afFieldInput name=this.current.title}}
+                {{/afEachArrayItem}}
+                <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="fields"><span class="glyphicon glyphicon-plus"></span></button>
+
+              </div>-->
+            </fieldset>
+          {{/autoForm}}
+
+        </div>
+
+      {{/if}}
     {{/if}}
 
     <!--{{#if inMenu}}
       <button class = "btn-deny toggle-menu">Remove From Menu</button>
     {{else}}
       <button class = "btn-primary toggle-menu">Add To Menu</button>
-    {{/if}}
-
-    {{#if $.Session.get 'editMode'}}
-      {{> quickForm collection="Recipes" id="updateRecipeId" type="update" doc=this autosave=true}}
     {{/if}}-->
+
+
   </article>
 </template>

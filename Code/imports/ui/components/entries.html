@@ -1,19 +1,12 @@
 <template name="Entries">
     <section class="newEntryTypes">
-      <ul>
-        <li>
-          <a href="/entries/newEntry/note">New Note</a>
-        </li>
-        <li>
-          <a href="/entries/newEntry/task">New Task</a>
-        </li>
-        <li>
-          <a href="/entries/newEntry/event">New Event</a>
-        </li>
-      </ul>
-      <div>
+      <button class = "btn-primary"><a href="/entries/newEntry/note">New Note</a> </button>
+      <button class = "btn-primary"> <a href="/entries/newEntry/task">New Task</a></button>
+      <button class = "btn-primary"><a href="/entries/newEntry/event">New Event</a></button>
+    </section>
+
+    <section class="search">
         <input type="text" name="search" class="form-control" width="250px" placeholder="Search entries...">
-      </div>
     </section>
 
     <section class="entries">
