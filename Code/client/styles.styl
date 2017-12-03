@@ -44,6 +44,14 @@ light-red = #CA5765
 pink = #CF256D
 orange = #E8846B
 
+background-color = #FEFFFF
+icon-color = #FEFFFF
+logo-color = #FEFFFF
+text-color = #FEFFFF
+headerbar-color = #2B7A78
+sidenav-color = #3AAFA9
+billboard-color = #3AAFA9
+
 z = {
     neg: -7,
     lowest: 1,
@@ -74,12 +82,12 @@ html
     box-sizing: inherit
 
 body
-    background light-grey
+    background background-color
     padding: 70px 0 150px
 
 header
-    color #FFF
-    background: #2c3e50
+    color logo-color
+    background: headerbar-color
     padding 20px
     fixed top left
     width 100%
@@ -94,7 +102,7 @@ header
     .login-buttons-dropdown-align-
         float right
         a
-            color #FFF
+            color text-color
             text-decoration none
 
 p
@@ -105,14 +113,51 @@ p
     text-align center
     margin-bottom 30px
 
-.billboard
-    background dark-purp
-    color #FFF
+.billboard, .billboard2
+    background billboard-color
+    color text-color
     font-size 2em
     text-align center
     padding 60px
+    a
+    line-height: 50px
+      margin 0
     h2
         margin 0
+
+.restofbody
+    background background-color
+    color billboard-color
+    text-align: center
+    font-size 3em
+    padding 25px
+    h5
+    line-height 60px
+
+.tempStatement
+    color billboard-color
+    font-size 50px
+    padding 30px
+    h5
+    line-height 70px
+
+.billboardStatement
+    background billboard-color
+    color text-color
+    font-size 2em
+    text-align center
+    padding 50px
+    h5
+    line-height 10px
+
+.fa-windows, .fa-apple, .fa-linux, .fa-android{
+color icon-color
+padding 30px 14px 140px 14px
+}
+.fa-twitter, .fa-facebook-square, .fa-google-plus, .fa-github{
+  color icon-color
+  padding 30px 14px 140px 14px
+}
 
 .main-layout
     lost-center 90%
@@ -145,10 +190,14 @@ p
     textarea, input
         width 100%
 
+.buttonColor
+    color text-color
+
+
 .btn, button
     display inline-block
     cursor pointer
-    background purp
+    background text-color
     color #FFF
     text-decoration none
     text-transform uppercase
@@ -163,20 +212,20 @@ p
         border-color @background
         shadow-level(2)
     &.btn-primary
-        background teal
-        border-color teal
-        color dark-purp
+        background sidenav-color
+        border-color sidenav-color
+        color text-color
         &:hover
-            background @background - 40
-            border-color @background
+            background headerbar-color
+            border-color headerbar-color
     &.btn-deny
-        background red
+        background text-color
         border solid 3px @background
         &:hover
             background @background - 20
             border-color @background
     &.btn-text
-        color purp
+        color text-color
         background transparent
         border solid 2px purp
         shadow-level(0)
@@ -185,13 +234,13 @@ p
             border-color @background
             shadow-level(1)
     &.btn-text-dark
-        color #FFF
+        color text-color
         background transparent
         border solid 2px #FFF
         shadow-level(0)
         &:hover
             background #FFF
-            color dark-purp
+            color text-color
             border-color @background
             shadow-level(1)
     &.btn-confirmation
@@ -202,7 +251,7 @@ p
             background @background - 20
             border-color dark-purp
     &.btn-cancel
-        color #FFF
+        color text-color
         background transparent
         border solid 2px #FFF
         opacity 0.4
@@ -215,7 +264,7 @@ p
             border-color @background
 
 input, select, textarea
-    color #e67e22
+    color headerbar-color
     background #FFF
     border solid 2px light-grey
     border-radius 2px
@@ -263,8 +312,8 @@ input, select, textarea
     height 100px
     width 100%
     overflow hidden
-    background #34495e
-    color #FFF
+    background sidenav-color
+    color icon-color
     z-index: z.header
     shadow-level(2)
     ul
@@ -281,7 +330,8 @@ input, select, textarea
         text-align center
         trans()
         &:hover, &.active
-            background red
+            background #DEF2F1
+            color headerbar-color
     i
         display block
         font-size 2em
@@ -298,13 +348,13 @@ input, select, textarea
         a
             padding 20px 10px
             &:hover, &.active
-                border-left 4px solid teal
+                border-left 4px solid headerbar-color
     +above($large)
         width $side-nav-large
         a
             padding 20px 20px
             &:hover, &.active
-                border-left 10px solid teal
+                border-left 10px solid headerbar-color
 
 .entry
     background #FFF
@@ -381,11 +431,11 @@ input, select, textarea
         z-index 10
         transform translate3d(0, 0, 0)
 
-.newEntryTypes
-  margin-bottom: 20px
-
 .menu-item
     @extend .entry
+
+.newEntryTypes
+		margin-bottom: 20px
 
 .shopping-list
     @extend .entry

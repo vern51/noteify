@@ -8,13 +8,13 @@ import '../imports/api/entries.js';
 });*/
 
 Meteor.publish('Entries', function(search){
-    console.log("publishing entries on server... search: " + search);
+    //console.log("publishing entries on server... search: " + search);
     let query      = {},
     projection = { limit: 10, sort: { dateCreated: -1 } };
 
     if ( search ) {
       let regex = new RegExp( search, 'i' );
-      console.log("setting up query: " + search);
+      //console.log("setting up query: " + search);
       query = {
         $or: [
           { userId: this.userId },
@@ -28,7 +28,7 @@ Meteor.publish('Entries', function(search){
     }
     try {
       //throw new Meteor.Error('Publication error', 'api/entries.js')
-      console.log("finding entries...");
+      //console.log("finding entries...");
       return Entries.find( query, projection );
     } catch (e) {
       console.log("Publication error in api/entries.js", e)

@@ -8,7 +8,7 @@
 
     {{#if isNote entryType}}
       <span class="description">Description: {{note.description}} </span>
-      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+      {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">
           {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
             <fieldset>
@@ -39,7 +39,7 @@
       <span class="dueDate">Due: {{task.dueDate}} </span>
       <span class="description">Description: {{task.description}} </span>
 
-      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+      {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">
           {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
             <fieldset>
@@ -71,7 +71,7 @@
       <span class="location">Location: {{{getMapUrl event.location}}}</span>
       <span class="description">Description : {{event.description}} </span>
 
-      {{#if edit}}<!--$.Session.get 'editMode'}}-->
+      {{#if $.Session.get 'editMode'}}
         <div class="new-entry-container">
           {{#autoForm collection="Entries" id=updateEntryId type="update" doc=this autosave=true}}
             <fieldset>
